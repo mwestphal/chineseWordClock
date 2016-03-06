@@ -1,3 +1,7 @@
+import sys,site
+site.addsitedir("/home/pi/wordClock/APA102_Pi")
+
+import apa102
 import datetime
 import lunardate
 
@@ -73,7 +77,7 @@ def getDayPeriod(sd, lightGrid):
     # ye jian
     print("ye jian")
     lightGrid += [(2,7)];
-    lightGrid += [(2,7)];
+    lightGrid += [(2,5)];
   return
 
 def getHour(hour, lightGrid):
@@ -203,10 +207,10 @@ def getTime(sd, lightGrid):
       print("shi fen")
       lightGrid += [(3,6)];
       lightGrid += [(3,4)];
-    elif minute <= 50:
+    elif minute <= 60:
       # wu fen
       print("wu fen")
-      lightGrid += [(3,7)];
+      lightGrid += [(3,5)];
       lightGrid += [(3,4)];
     
     getHour((hour + 1)%12, lightGrid);
@@ -310,30 +314,52 @@ def checkValentineFestival(sd, ld, lightGrid):
       return True
   return False
 
-sd = datetime.datetime.now();
-ld = lunardate.LunarDate.today();
-lightGrid = [];
+def generateLightGrid():
+  sd = datetime.datetime.now();
+  ld = lunardate.LunarDate.today();
+  lightGrid = [];
 
-if checkNewYear(sd, lightGrid):
-  print("NewYear")
-elif checkMqBirthday(sd, lightGrid):
-  print("mq")
-elif checkYunBirthday(sd, lightGrid):
-  print("yun")
-elif checkSpringFestival(sd, ld, lightGrid):
-  print("spring")
-elif checkLanternFestival(sd, ld, lightGrid):
-  print("lantern")
-elif checkMidAutumnFestival(sd, ld, lightGrid):
-  print("midautumn")
-elif checkValentineFestival(sd, ld, lightGrid):
-  print("valentine")
-else:
-  getWeekDay(sd, lightGrid);
-  getDayPeriod(sd, lightGrid);
-  getTime(sd, lightGrid);
-  getLove(lightGrid);
-print(sd)
-print(lightGrid)
+  if checkNewYear(sd, lightGrid):
+    print("NewYear")
+  elif checkMqBirthday(sd, lightGrid):
+    print("mq")
+  elif checkYunBirthday(sd, lightGrid):
+    print("yun")
+  elif checkSpringFestival(sd, ld, lightGrid):
+    print("spring")
+  elif checkLanternFestival(sd, ld, lightGrid):
+    print("lantern")
+  elif checkMidAutumnFestival(sd, ld, lightGrid):
+    print("midautumn")
+  elif checkValentineFestival(sd, ld, lightGrid):
+    print("valentine")
+  else:
+    getWeekDay(sd, lightGrid);
+    getDayPeriod(sd, lightGrid);
+    getTime(sd, lightGrid);
+    getLove(lightGrid);
+    print(sd)
+    print(lightGrid)
+  return lightGrid
 
 
+def lightGridToLedNumbers(ligthGrid):
+  leds = [];
+  for coord in ligthGrid:
+    y = coord[1]
+    x = coord[0]
+    if y%2 == 1:
+      leds += [y * 9 + (7 - x)]
+    else:
+      leds += [y * 9 + x]
+  return leds
+
+
+
+ligthGrid = generateLightGrid()
+leds = lightGridToLedNumbers(ligthGrid)
+print(leds)
+strip = apa102.APA102(71, 5)
+for led in leds:
+  strip.setPixelRGB(led, 0xFFFFFF)
+strip.show()
