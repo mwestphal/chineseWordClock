@@ -1,5 +1,5 @@
 import sys,site
-site.addsitedir("/home/pi/wordClock/APA102_Pi")
+site.addsitedir("/home/alarm/wordclock/APA102_Pi")
 
 import apa102
 import datetime
