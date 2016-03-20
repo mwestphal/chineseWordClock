@@ -1,1 +1,1 @@
-/usr/bin/python /home/pi/wordclock/chineseWordClock/generateLightGrid.py > /home/pi/wordclock/lastWordclock.log
+/usr/bin/python /home/alarm/wordclock/chineseWordClock/generateLightGrid.py > /home/alarm/wordclock/lastWordclock.log
