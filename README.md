@@ -42,3 +42,14 @@ https://github.com/tinue/APA102_Pi
 
 Then run wordclock.sh at startup.
 
+Permissions
+===========
+First enable spidev devices in /boot/config.txt
+```
+device_tree_param=spi=on
+```
+
+To use spidev devices without being root do the following :
+```
+chown alarm:alarm /dev/spidev0.*
+```
