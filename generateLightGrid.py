@@ -3,6 +3,7 @@ site.addsitedir("/home/alarm/wordclock/APA102_Pi")
 
 import apa102
 import datetime
+import time
 import lunardate
 
 def getWeekDay(sd, lightGrid):
@@ -354,12 +355,36 @@ def lightGridToLedNumbers(ligthGrid):
       leds += [y * 9 + x]
   return leds
 
+def show(strip, leds):
+  for led in leds:
+    strip.setPixelRGB(led, 0xFFFFFF)
+  strip.show()
 
+def slowShow(strip, leds):
+  for i in range(255):
+    for led in leds:
+      strip.setPixel(led, i, i, i)
+    strip.show()
+    time.sleep(0.005)
 
-ligthGrid = generateLightGrid()
-leds = lightGridToLedNumbers(ligthGrid)
-print(leds)
-strip = apa102.APA102(71, 5)
-for led in leds:
-  strip.setPixelRGB(led, 0xFFFFFF)
-strip.show()
+def slowFade(strip, leds):
+  for i in range(255):
+    for led in leds:
+      strip.setPixel(led, 255-i, 255-i, 255-i)
+    strip.show()
+    time.sleep(0.005)
+
+leds = []
+nextLeds = []
+while True:
+  ligthGrid = generateLightGrid()
+  nextLeds = lightGridToLedNumbers(ligthGrid)
+  print(nextLeds)
+  if nextLeds != leds:
+    strip = apa102.APA102(71, 10)
+    slowFade(strip, leds)
+    leds = nextLeds
+    time.sleep(0.3)
+    slowShow(strip, leds)
+  time.sleep(5)
+
