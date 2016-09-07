@@ -12,7 +12,7 @@ Installation
 
 Connect a correct layout of led
 it should be organized this way :
-
+```
 63 - 62 - 61 - 60 - 59 - 58 - 57 - 56 
                                     |
 48 - 49 - 50 - 51 - 52 - 53 - 54 - 55
@@ -28,16 +28,16 @@ it should be organized this way :
 15 - 14 - 13 - 12 - 11 - 10 - 9 -- 8
                                     |
 0 -- 1 -- 2 -- 3 -- 4 -- 5 -- 6 -- 7 
-
+```
 with of correct the correct layout of chinese characters on top
 
 Then connect the raspberry pi pin this way : 
-Black -> GND
-Blue-> SCLK
-Gree -> MOSI
-Red -> Power
+ * Black -> GND
+ * Blue-> SCLK
+ * Green -> MOSI
+ * Red -> Power
 
-more info here 
+more info here :
 https://github.com/tinue/APA102_Pi
 
 Then run wordclock.sh at startup.
